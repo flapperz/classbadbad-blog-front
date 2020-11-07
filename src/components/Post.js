@@ -34,7 +34,6 @@ const Post = () => {
       <Comment/>
       <Comment author={true}/>
       <TextField
-        className={classes.textField}
         placeholder="Write a comment..."
         variant="outlined"
         size="small"
@@ -80,9 +79,6 @@ const Post = () => {
     divider: {
       marginTop: 16,
       marginBottom: 16
-    },
-    textField: {
-      backgroundColor: "#E7E7E7",
     },
     owner:{
       fontWeight: 500
