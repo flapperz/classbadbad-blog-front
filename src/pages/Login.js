@@ -60,7 +60,8 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh"
+    height: "100vh",
+    marginTop: -60
   },
   textFieldContainer: {
     display: "flex",

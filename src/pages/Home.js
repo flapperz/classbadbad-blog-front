@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import UserImg from "../assets/user.png";
+import Post from "../components/Post";
 
 const Home = ({ history }) => {
   const classes = useStyles();
@@ -11,7 +12,7 @@ const Home = ({ history }) => {
   return (
     <div>
       <div className={classes.navBar}>
-        <div style={{ marginRight: 12 }}>username</div>
+        <div style={{ marginRight: 12 }}>username,</div>
         <Button
           className={classes.logoutButton}
           variant="contained"
@@ -48,6 +49,7 @@ const Home = ({ history }) => {
         >
           Post
         </Button>
+        <Post/>
       </div>
     </div>
   );
@@ -59,6 +61,8 @@ const useStyles = makeStyles({
     flex: 1,
     flexDirection: "column",
     padding: "32px 165px",
+    height: "100vh",
+    backgroundColor: "#F9F9F9",
   },
   navBar: {
     display: "flex",
@@ -66,7 +70,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     width: "100vw",
     height: 48,
-    backgroundColor: "#E8EBE6",
+    boxShadow: "inset 0 0 1px #353736",
   },
   logoutButton: {
     height: 32,
@@ -81,7 +85,8 @@ const useStyles = makeStyles({
     color: "white",
     boxShadow: 'none',
     alignSelf: "flex-end",
-    marginTop: 8
+    marginTop: 8,
+    marginBottom: 24
   },
   img: {
     display: "flex",
