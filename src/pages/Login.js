@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { makeStyles } from "@material-ui/core/styles";
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -43,6 +42,8 @@ const Login = ({ history }) => {
       </div>
       <Button
         className={classes.button}
+        variant="contained"
+        color="primary"
         onClick={() => {
           history.push("/home")
         }}
@@ -79,7 +80,7 @@ const useStyles = makeStyles({
     height: 36,
     width: 120,
     color: "white",
-    background: "linear-gradient( #9399DB 30%, #9399DB 70%)",
+    boxShadow: 'none',
     marginTop: 20
   }
 });
