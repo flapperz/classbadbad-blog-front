@@ -25,6 +25,7 @@ const Comment = ({
     <div className={classes.container}>
       <div className={classes.header}>
         <div className={classes.authorDetail}>
+          {/* TODO: get username from get post API */}
           <div className={classes.owner}>Username</div>
           { postAuthor &&
             <div className={classes.postAuthor}>

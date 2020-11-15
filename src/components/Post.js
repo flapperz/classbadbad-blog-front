@@ -35,11 +35,11 @@ const Post = ({
             src={UserImg}
           />
           <div className={classes.userDetail}>
+            {/* TODO: get username from get post API */}
             <div className={classes.owner}>Username</div>
             <Moment className={classes.time} fromNow>{timestamp}</Moment>
           </div>
         </div>
-        {console.log(userRole)}
         { (userRole === ROLE.ADMIN || userId === authorId) &&
           <div>
             <EditIcon className={classes.icon}/>
