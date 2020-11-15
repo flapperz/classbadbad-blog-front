@@ -18,13 +18,29 @@ const theme = createMuiTheme({
 	},
 });
 
-function App() {
+const App = () => {
+  const [token, setToken] = React.useState(null);
+  
+  const handleSetToken = (data) => {
+		localStorage.setItem('token', JSON.stringify(data));
+		setToken(data);
+	};
+
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		setToken(null);
+  };
+  
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/home" component={Home} />
+          <Route path="/login" exact>
+            <Login handleLogin={(user) => handleSetToken(user)}/>
+          </Route>
+          <Route path="/home" exact>
+            <Home token={token} handleLogout={handleLogout}/>
+          </Route>
           <Redirect to="/login" />
         </Switch>
       </Router>

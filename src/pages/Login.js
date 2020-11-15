@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -7,9 +9,30 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 
-const Login = ({ history }) => {
+const Login = ({ history, handleLogin }) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const login = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/auth/login", { 
+        username, 
+        password 
+      });
+      const { access_token, message } = response.data;
+      // console.log(response);
+      if (access_token) {
+        handleLogin(access_token);
+        history.push("/home");
+      } else {
+        console.log(message);
+      }
+    } catch (e) {
+      console.log("There are something wrong :(");
+    }
+  };
 
   return (
     <div className={classes.container}>
@@ -44,9 +67,7 @@ const Login = ({ history }) => {
         className={classes.button}
         variant="contained"
         color="primary"
-        onClick={() => {
-          history.push("/home")
-        }}
+        onClick={() => login()}
       >
         Log in
       </Button>
