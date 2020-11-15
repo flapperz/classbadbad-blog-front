@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,14 +22,13 @@ const Login = ({ history, handleLogin }) => {
         username, 
         password 
       });
-      const { access_token, message } = response.data;
-      // console.log(response);
+      const { access_token } = response.data;
       if (access_token) {
         handleLogin(access_token);
         history.push("/home");
       } else {
-        console.log(message);
-      }
+        console.log("Error");
+      } 
     } catch (e) {
       console.log("There are something wrong :(");
     }
@@ -41,6 +41,8 @@ const Login = ({ history, handleLogin }) => {
         <InputBase
           className={classes.textField}
           placeholder="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
         />
       </div>
       <div className={classes.textFieldContainer}>
@@ -61,6 +63,8 @@ const Login = ({ history, handleLogin }) => {
               </IconButton>
             </InputAdornment>
           }
+          value={password}
+          onChange={e => setPassword(e.target.value)}
         />
       </div>
       <Button
@@ -107,4 +111,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default Login;
+export default withRouter(Login);

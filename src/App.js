@@ -36,11 +36,16 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/login" exact>
-            <Login handleLogin={(user) => handleSetToken(user)}/>
+            <Login handleLogin={(token) => handleSetToken(token)}/>
           </Route>
-          <Route path="/home" exact>
-            <Home token={token} handleLogout={handleLogout}/>
-          </Route>
+          { token && 
+            <div>
+              <Route path="/home" exact>
+                <Home token={token} handleLogout={handleLogout}/>
+              </Route>
+              <Redirect to="/home" />
+            </div>
+          }
           <Redirect to="/login" />
         </Switch>
       </Router>
