@@ -1,4 +1,6 @@
 import React from 'react';
+import Moment from 'react-moment';
+
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -8,7 +10,20 @@ import TextField from '@material-ui/core/TextField';
 import UserImg from "../assets/user.png";
 import Comment from "../components/Comment";
 
-const Post = () => {
+const ROLE = {
+  ADMIN: "ADMIN",
+  USER: "USER"
+}
+
+const Post = ({
+  content, 
+  authorId, 
+  timestamp, 
+  isEdited, 
+  comments,
+  userId,
+  userRole
+}) => {
   const classes = useStyles();
   
   return (
@@ -21,18 +36,34 @@ const Post = () => {
           />
           <div className={classes.userDetail}>
             <div className={classes.owner}>Username</div>
-            <div className={classes.time}>30 mins</div>
+            <Moment className={classes.time} fromNow>{timestamp}</Moment>
           </div>
         </div>
-        <div>
-          <EditIcon className={classes.icon}/>
-          <DeleteIcon className={classes.icon}/>
-        </div>
+        {console.log(userRole)}
+        { (userRole === ROLE.ADMIN || userId === authorId) &&
+          <div>
+            <EditIcon className={classes.icon}/>
+            <DeleteIcon className={classes.icon}/>
+          </div>
+        }
       </div>
-      <div>content</div>
+      <div>{content}</div>
+      { isEdited &&
+        <div className={classes.edited}>Edited</div>
+      }
       <Divider className={classes.divider}/>
-      <Comment/>
-      <Comment author={true}/>
+      { comments.map((comment) => (
+        <Comment
+          key={comment._id}
+          postAuthor={authorId} 
+          content={comment.commentMsg}
+          isEdited={comment.isEdited}
+          timestamp={comment.timestamp}
+          commentAuthor={comment.userId}
+          userId={userId}
+          userRole={userRole}
+        />
+      ))}
       <TextField
         placeholder="Write a comment..."
         variant="outlined"
@@ -89,6 +120,12 @@ const Post = () => {
     },
     comment: {
       marginBottom: 8
+    },
+    edited: {
+      fontSize: 10,
+      color: "#ADAFA9",
+      fontStyle: "italic",
+      marginTop: 2
     }
   });
   

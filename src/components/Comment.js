@@ -1,9 +1,24 @@
 import React from 'react';
+import Moment from 'react-moment';
+
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const Comment = ({ author }) => {
+const ROLE = {
+  ADMIN: "ADMIN",
+  USER: "USER"
+}
+
+const Comment = ({ 
+  postAuthor,
+  content,
+  isEdited,
+  timestamp,
+  commentAuthor,
+  userId,
+  userRole
+}) => {
   const classes = useStyles();
   
   return (
@@ -11,23 +26,27 @@ const Comment = ({ author }) => {
       <div className={classes.header}>
         <div className={classes.authorDetail}>
           <div className={classes.owner}>Username</div>
-          { author &&
+          { postAuthor &&
             <div className={classes.postAuthor}>
               <div>Author</div>
             </div>
           }
-          <div className={classes.time}>5 mins</div>
+          <Moment className={classes.time} fromNow>{timestamp}</Moment>
         </div>
-        <div>
-          { author &&
+        { (userRole === ROLE.ADMIN || userId === commentAuthor) &&
+          <div>
             <EditIcon className={classes.icon}/>
-          }
+            <DeleteIcon className={classes.icon}/>
+          </div>
+        }
+        { userId === postAuthor &&
           <DeleteIcon className={classes.icon}/>
-        </div>
+        }
       </div>
-      <div>
-        comment
-      </div>
+      <div>{content}</div>
+      { isEdited &&
+        <div className={classes.edited}>Edited</div>
+      }
     </div>
   );
 };
@@ -75,6 +94,12 @@ const Comment = ({ author }) => {
       color: "white",
       fontSize: 12,
       marginRight: 8
+    },
+    edited: {
+      fontSize: 10,
+      color: "#ADAFA9",
+      fontStyle: "italic",
+      marginTop: 2
     }
   });
   

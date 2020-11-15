@@ -9,12 +9,18 @@ import TextField from '@material-ui/core/TextField';
 import UserImg from "../assets/user.png";
 import Post from "../components/Post";
 
+const ROLE = {
+  ADMIN: "ADMIN",
+  USER: "USER"
+}
+
 const Home = ({ history }) => {
   const classes = useStyles();
   const token = JSON.parse(localStorage.getItem('token'));
   const [username, setUsername] = useState('');
-  const [ownerId, setOwnerID] = useState('');
-  const [role, setRole] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userRole, setUserRole] = useState('');
+  const [allPosts, setAllPosts] = useState([]);
 
   const getProfile = async () => {
     try {
@@ -25,12 +31,12 @@ const Home = ({ history }) => {
       });
       const { userId, username, role } = response.data;
       if (userId) {
-        setOwnerID(userId);
+        setUserId(userId);
         setUsername(username);
         if (role == 0) {
-          setRole("ADMIN");
+          setUserRole(ROLE.ADMIN);
         } else {
-          setRole("USER");
+          setUserRole(ROLE.USER);
         }
       } else {
         console.log("GetProfile Error");
@@ -40,8 +46,26 @@ const Home = ({ history }) => {
     }
   };
 
+  const getAllPosts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/post", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.data) {
+        setAllPosts(response.data);
+      } else {
+        console.log("GetPost Error");
+      } 
+    } catch (e) {
+      console.log("There are something wrong about get post :(");
+    }
+  };
+
   useEffect(() => {
     getProfile();
+    getAllPosts();
   }, []);
 
   return (
@@ -82,7 +106,20 @@ const Home = ({ history }) => {
         >
           Post
         </Button>
-        <Post/>
+        { allPosts.map((post) => (
+          <div style={{ marginBottom: 12 }}> 
+            <Post 
+              key={post._id}
+              content={post.message}
+              authorId={post.userId}
+              timestamp={post.timestamp} 
+              isEdited={post.isEdited}
+              comments={post.comments}
+              userId={userId}
+              userRole={userRole}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -91,10 +128,9 @@ const Home = ({ history }) => {
 const useStyles = makeStyles({
   container: {
     display: "flex",
-    flex: 1,
+    flexGrow: 1,
     flexDirection: "column",
     padding: "32px 165px",
-    height: "100vh",
     backgroundColor: "#F9F9F9",
   },
   navBar: {
