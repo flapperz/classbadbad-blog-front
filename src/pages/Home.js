@@ -21,6 +21,7 @@ const Home = ({ history }) => {
   const [userId, setUserId] = useState('');
   const [userRole, setUserRole] = useState('');
   const [allPosts, setAllPosts] = useState([]);
+  const [postContent, setPostContent] = useState('');
 
   const getProfile = async () => {
     try {
@@ -68,6 +69,27 @@ const Home = ({ history }) => {
     getAllPosts();
   }, []);
 
+  const handleCreatePost = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/post", {
+        message: postContent
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { message } = response.data;
+      if (message) {
+        console.log(message);
+        setPostContent('');
+      } else {
+        console.log("CreatePost Error");
+      } 
+    } catch (e) {
+      console.log("There are something wrong about create post :(");
+    }
+  };
+
   return (
     <div>
       <div className={classes.navBar}>
@@ -94,15 +116,15 @@ const Home = ({ history }) => {
             rowsMax={4}
             variant="outlined"
             size="small"
+            value={postContent}
+            onChange={e => setPostContent(e.target.value)}
           />
         </div>
         <Button
           className={classes.postButton}
           variant="contained"
           color="primary"
-          onClick={() => {
-            // history.push("/login")
-          }}
+          onClick={() => handleCreatePost()}
         >
           Post
         </Button>
@@ -110,6 +132,7 @@ const Home = ({ history }) => {
           <div style={{ marginBottom: 12 }}> 
             <Post 
               key={post._id}
+              postId={post._id}
               content={post.message}
               authorId={post.userId}
               timestamp={post.timestamp} 
@@ -117,6 +140,7 @@ const Home = ({ history }) => {
               comments={post.comments}
               userId={userId}
               userRole={userRole}
+              getAllPosts={getAllPosts}
             />
           </div>
         ))}

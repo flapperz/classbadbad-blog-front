@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
+import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
@@ -16,15 +17,50 @@ const ROLE = {
 }
 
 const Post = ({
-  content, 
+  postId,
+  content,
   authorId, 
   timestamp, 
   isEdited, 
   comments,
   userId,
-  userRole
+  userRole,
+  getAllPosts
 }) => {
   const classes = useStyles();
+  const token = JSON.parse(localStorage.getItem('token'));
+  const [commentContent, setCommentContent] = useState('');
+
+  const handleCreateComment = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/post/comment/"+postId, {
+        commentMsg: commentContent
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { message } = response.data;
+      if (message) {
+        console.log(message);
+        setCommentContent('');
+      } else {
+        console.log("CreatePost Error");
+      } 
+    } catch (e) {
+      console.log("There are something wrong about create post :(");
+    }
+  };
+
+  const onTextFiledPressEnter = (e) => {
+    if (e.keyCode === 13) {
+      handleCreateComment();
+    }
+  };
+
+  useEffect(() => {
+    getAllPosts();
+  }, [commentContent]);
   
   return (
     <div className={classes.container}>
@@ -55,7 +91,8 @@ const Post = ({
       { comments.map((comment) => (
         <Comment
           key={comment._id}
-          postAuthor={authorId} 
+          postAuthor={authorId}
+          commentId={comment._id} 
           content={comment.commentMsg}
           isEdited={comment.isEdited}
           timestamp={comment.timestamp}
@@ -68,6 +105,9 @@ const Post = ({
         placeholder="Write a comment..."
         variant="outlined"
         size="small"
+        value={commentContent}
+        onChange={e => setCommentContent(e.target.value)}
+        onKeyDown={onTextFiledPressEnter}
       />
     </div>
   );

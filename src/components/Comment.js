@@ -12,6 +12,7 @@ const ROLE = {
 
 const Comment = ({ 
   postAuthor,
+  commentId,
   content,
   isEdited,
   timestamp,
@@ -40,7 +41,7 @@ const Comment = ({
             <DeleteIcon className={classes.icon}/>
           </div>
         }
-        { userId === postAuthor &&
+        { (userId === postAuthor && userId !== commentAuthor) &&
           <DeleteIcon className={classes.icon}/>
         }
       </div>
