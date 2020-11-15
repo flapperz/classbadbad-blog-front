@@ -14,7 +14,7 @@ const ROLE = {
   USER: "USER"
 }
 
-const Home = ({ history }) => {
+const Home = ({ history, handleLogout }) => {
   const classes = useStyles();
   const token = JSON.parse(localStorage.getItem('token'));
   const [username, setUsername] = useState('');
@@ -98,7 +98,10 @@ const Home = ({ history }) => {
           className={classes.logoutButton}
           variant="contained"
           color="primary"
-          onClick={() => history.push("/login")}
+          onClick={() => {
+            handleLogout();
+            history.push("/login");
+          }}
         >
           Log out
         </Button>
