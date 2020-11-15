@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
+import backend from "../ip";
+
 import { makeStyles } from "@material-ui/core/styles";
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -18,7 +20,7 @@ const Login = ({ history, handleLogin }) => {
 
   const login = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", { 
+      const response = await axios.post(backend+"/auth/login", { 
         username, 
         password 
       });

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
+import backend from "../ip";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -25,7 +27,7 @@ const Home = ({ history, handleLogout }) => {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/profile", {
+      const response = await axios.get(backend+"/profile", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -49,7 +51,7 @@ const Home = ({ history, handleLogout }) => {
 
   const getAllPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/post", {
+      const response = await axios.get(backend+"/post", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -71,7 +73,7 @@ const Home = ({ history, handleLogout }) => {
 
   const handleCreatePost = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/post", {
+      const response = await axios.post(backend+"/post", {
         message: postContent
       }, {
         headers: {

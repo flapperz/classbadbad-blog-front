@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Moment from 'react-moment';
 import axios from "axios";
 
+import backend from "../ip";
+
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -34,7 +36,7 @@ const Post = ({
 
   const handleCreateComment = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/post/comment/"+postId, {
+      const response = await axios.post(backend+"/post/comment/"+postId, {
         commentMsg: commentContent
       }, {
         headers: {
@@ -62,7 +64,7 @@ const Post = ({
 
   const handleDeletePost = async () => {
     try {
-      const response = await axios.delete("http://localhost:3000/post/"+postId, {
+      const response = await axios.delete(backend+"/post/"+postId, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

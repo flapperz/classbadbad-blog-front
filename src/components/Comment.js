@@ -2,6 +2,8 @@ import React from 'react';
 import Moment from 'react-moment';
 import axios from "axios";
 
+import backend from "../ip";
+
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -29,7 +31,7 @@ const Comment = ({
 
   const handleDeleteComment = async () => {
     try {
-      const response = await axios.delete("http://localhost:3000/post/comment/"+postId+"/"+commentId, {
+      const response = await axios.delete(backend+"/post/comment/"+postId+"/"+commentId, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
