@@ -82,6 +82,7 @@ const Home = ({ history, handleLogout }) => {
       if (message) {
         console.log(message);
         setPostContent('');
+        getAllPosts();
       } else {
         console.log("CreatePost Error");
       } 

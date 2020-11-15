@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Moment from 'react-moment';
 import axios from "axios";
 
@@ -44,11 +44,12 @@ const Post = ({
       if (message) {
         console.log(message);
         setCommentContent('');
+        getAllPosts();
       } else {
-        console.log("CreatePost Error");
+        console.log("CreateComment Error");
       } 
     } catch (e) {
-      console.log("There are something wrong about create post :(");
+      console.log("There are something wrong about create comment :(");
     }
   };
 
@@ -58,9 +59,24 @@ const Post = ({
     }
   };
 
-  useEffect(() => {
-    getAllPosts();
-  }, [commentContent]);
+  const handleDeletePost = async () => {
+    try {
+      const response = await axios.delete("http://localhost:3000/post/"+postId, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { message } = response.data;
+      if (message) {
+        console.log(message);
+        getAllPosts();
+      } else {
+        console.log("DeletePost Error");
+      } 
+    } catch (e) {
+      console.log("There are something wrong about delete post :(");
+    }
+  };
   
   return (
     <div className={classes.container}>
@@ -79,7 +95,10 @@ const Post = ({
         { (userRole === ROLE.ADMIN || userId === authorId) &&
           <div>
             <EditIcon className={classes.icon}/>
-            <DeleteIcon className={classes.icon}/>
+            <DeleteIcon 
+              className={classes.icon} 
+              onClick={() => handleDeletePost()}
+            />
           </div>
         }
       </div>
@@ -91,6 +110,7 @@ const Post = ({
       { comments.map((comment) => (
         <Comment
           key={comment._id}
+          postId={postId}
           postAuthor={authorId}
           commentId={comment._id} 
           content={comment.commentMsg}
@@ -99,6 +119,7 @@ const Post = ({
           commentAuthor={comment.userId}
           userId={userId}
           userRole={userRole}
+          getAllPosts={getAllPosts}
         />
       ))}
       <TextField

@@ -1,5 +1,6 @@
 import React from 'react';
 import Moment from 'react-moment';
+import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
@@ -11,6 +12,7 @@ const ROLE = {
 }
 
 const Comment = ({ 
+  postId,
   postAuthor,
   commentId,
   content,
@@ -18,9 +20,30 @@ const Comment = ({
   timestamp,
   commentAuthor,
   userId,
-  userRole
+  userRole,
+  getAllPosts
 }) => {
   const classes = useStyles();
+  const token = JSON.parse(localStorage.getItem('token'));
+
+  const handleDeleteComment = async () => {
+    try {
+      const response = await axios.delete("http://localhost:3000/post/comment/"+postId+"/"+commentId, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { message } = response.data;
+      if (message) {
+        console.log(message);
+        getAllPosts();
+      } else {
+        console.log("DeleteComment Error");
+      } 
+    } catch (e) {
+      console.log("There are something wrong about delete comment :(");
+    }
+  };
   
   return (
     <div className={classes.container}>
@@ -38,11 +61,17 @@ const Comment = ({
         { (userRole === ROLE.ADMIN || userId === commentAuthor) &&
           <div>
             <EditIcon className={classes.icon}/>
-            <DeleteIcon className={classes.icon}/>
+            <DeleteIcon 
+              className={classes.icon} 
+              onClick={() => handleDeleteComment()}
+            />
           </div>
         }
         { (userId === postAuthor && userId !== commentAuthor) &&
-          <DeleteIcon className={classes.icon}/>
+          <DeleteIcon 
+              className={classes.icon} 
+              onClick={() => handleDeleteComment()}
+            />
         }
       </div>
       <div>{content}</div>
