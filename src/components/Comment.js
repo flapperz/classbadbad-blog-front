@@ -51,7 +51,7 @@ const Comment = ({
         <div className={classes.authorDetail}>
           {/* TODO: get username from get post API */}
           <div className={classes.owner}>Username</div>
-          { postAuthor &&
+          { postAuthor === commentAuthor &&
             <div className={classes.postAuthor}>
               <div>Author</div>
             </div>
