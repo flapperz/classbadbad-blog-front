@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { withRouter } from "react-router-dom";
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -8,18 +11,48 @@ import Post from "../components/Post";
 
 const Home = ({ history }) => {
   const classes = useStyles();
+  const token = JSON.parse(localStorage.getItem('token'));
+  const [username, setUsername] = useState('');
+  const [ownerId, setOwnerID] = useState('');
+  const [role, setRole] = useState('');
+
+  const getProfile = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/profile", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { userId, username, role } = response.data;
+      if (userId) {
+        setOwnerID(userId);
+        setUsername(username);
+        if (role == 0) {
+          setRole("ADMIN");
+        } else {
+          setRole("USER");
+        }
+      } else {
+        console.log("GetProfile Error");
+      } 
+    } catch (e) {
+      console.log("There are something wrong about get profile :(");
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <div>
       <div className={classes.navBar}>
-        <div style={{ marginRight: 12 }}>username,</div>
+        <div style={{ marginRight: 12 }}>{username},</div>
         <Button
           className={classes.logoutButton}
           variant="contained"
           color="primary"
-          onClick={() => {
-            history.push("/login")
-          }}
+          onClick={() => history.push("/login")}
         >
           Log out
         </Button>
@@ -105,4 +138,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default Home;
+export default withRouter(Home);

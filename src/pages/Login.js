@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
@@ -12,9 +12,9 @@ import Button from '@material-ui/core/Button';
 
 const Login = ({ history, handleLogin }) => {
   const classes = useStyles();
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const login = async () => {
     try {

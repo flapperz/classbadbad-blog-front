@@ -41,7 +41,7 @@ const App = () => {
           { token && 
             <div>
               <Route path="/home" exact>
-                <Home token={token} handleLogout={handleLogout}/>
+                <Home handleLogout={handleLogout}/>
               </Route>
               <Redirect to="/home" />
             </div>
