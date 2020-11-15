@@ -139,6 +139,7 @@ const Home = ({ history, handleLogout }) => {
               postId={post._id}
               content={post.message}
               authorId={post.userId}
+              authorName={post.username}
               timestamp={post.timestamp} 
               isEdited={post.isEdited}
               comments={post.comments}

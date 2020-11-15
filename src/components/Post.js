@@ -19,7 +19,8 @@ const ROLE = {
 const Post = ({
   postId,
   content,
-  authorId, 
+  authorId,
+  authorName,
   timestamp, 
   isEdited, 
   comments,
@@ -87,8 +88,7 @@ const Post = ({
             src={UserImg}
           />
           <div className={classes.userDetail}>
-            {/* TODO: get username from get post API */}
-            <div className={classes.owner}>Username</div>
+            <div className={classes.owner}>{authorName}</div>
             <Moment className={classes.time} fromNow>{timestamp}</Moment>
           </div>
         </div>
@@ -117,6 +117,7 @@ const Post = ({
           isEdited={comment.isEdited}
           timestamp={comment.timestamp}
           commentAuthor={comment.userId}
+          commentAuthorName={comment.username}
           userId={userId}
           userRole={userRole}
           getAllPosts={getAllPosts}

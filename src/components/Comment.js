@@ -19,6 +19,7 @@ const Comment = ({
   isEdited,
   timestamp,
   commentAuthor,
+  commentAuthorName,
   userId,
   userRole,
   getAllPosts
@@ -49,8 +50,7 @@ const Comment = ({
     <div className={classes.container}>
       <div className={classes.header}>
         <div className={classes.authorDetail}>
-          {/* TODO: get username from get post API */}
-          <div className={classes.owner}>Username</div>
+          <div className={classes.owner}>{commentAuthorName}</div>
           { postAuthor === commentAuthor &&
             <div className={classes.postAuthor}>
               <div>Author</div>
