@@ -69,7 +69,7 @@ const Comment = ({
             />
           </div>
         }
-        { (userId === postAuthor && userId !== commentAuthor) &&
+        { (userId === postAuthor && userId !== commentAuthor && userRole !== ROLE.ADMIN) &&
           <DeleteIcon 
               className={classes.icon} 
               onClick={() => handleDeleteComment()}
