@@ -7,6 +7,7 @@ import backend from "../ip";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import TextField from '@material-ui/core/TextField';
 
 const ROLE = {
   ADMIN: "ADMIN",
@@ -29,7 +30,7 @@ const Comment = ({
   const classes = useStyles();
   const token = JSON.parse(localStorage.getItem('token'));
   const [editedCommentContent, setEditedCommentContent] = useState('');
-
+  const [wantToEdited, setWantToEdited] = useState(false);
 
   const handleDeleteComment = async () => {
     try {
@@ -53,7 +54,7 @@ const Comment = ({
   const handleEditComment = async () => {
     try {
       const response = await axios.patch(backend+"/post/comment/"+postId+"/"+commentId, {
-          message: editedCommentContent
+        commentMsg: editedCommentContent
       },{
         headers: {
           'Authorization': `Bearer ${token}`
@@ -62,13 +63,22 @@ const Comment = ({
       const { message } = response.data;
       if (message) {
         console.log(message);
-        setEditedCommentContent('hello edited comment');
+        setEditedCommentContent('');
+        setWantToEdited(false);
         getAllPosts();
       } else {
         console.log("EditComment Error");
       } 
   } catch (e) {
     console.log("There is something wrong about edit comment :(");
+    }
+  };
+
+  const onTextFiledPressEnter = (e) => {
+    if (e.keyCode === 13) {
+      if(wantToEdited) {
+        handleEditComment();
+      } 
     }
   };
 
@@ -88,7 +98,7 @@ const Comment = ({
           <div>
             <EditIcon 
               className={classes.icon}
-              onClick={() => handleEditComment()}
+              onClick={() => setWantToEdited(true)}
             />
             <DeleteIcon 
               className={classes.icon} 
@@ -103,9 +113,21 @@ const Comment = ({
             />
         }
       </div>
-      <div>{content}</div>
-      { isEdited &&
-        <div className={classes.edited}>Edited</div>
+      { wantToEdited ?
+        <TextField
+          placeholder="Edit comment..."
+          variant="outlined"
+          size="small"
+          value={editedCommentContent}
+          onChange={e => setEditedCommentContent(e.target.value)}
+          onKeyDown={onTextFiledPressEnter}
+        /> :
+        <div>
+          <div>{content}</div>
+          { isEdited &&
+            <div className={classes.edited}>Edited</div>
+          }
+        </div>
       }
     </div>
   );

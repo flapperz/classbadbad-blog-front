@@ -12,7 +12,6 @@ import TextField from '@material-ui/core/TextField';
 
 import UserImg from "../assets/user.png";
 import Comment from "../components/Comment";
-import { Button } from '@material-ui/core';
 
 const ROLE = {
   ADMIN: "ADMIN",
@@ -35,6 +34,7 @@ const Post = ({
   const token = JSON.parse(localStorage.getItem('token'));
   const [commentContent, setCommentContent] = useState('');
   const [editedPostContent, setEditedPostContent] = useState('');
+  const [wantToEdited, setWantToEdited] = useState(false);
 
   const handleCreateComment = async () => {
     try {
@@ -60,7 +60,11 @@ const Post = ({
 
   const onTextFiledPressEnter = (e) => {
     if (e.keyCode === 13) {
-      handleCreateComment();
+      if(wantToEdited) {
+        handleEditPost();
+      } else {
+        handleCreateComment();
+      }
     }
   };
 
@@ -77,7 +81,8 @@ const Post = ({
       const { message } = response.data;
       if(message){
         console.log(message);
-        setEditedPostContent('hello edited post');
+        setEditedPostContent('');
+        setWantToEdited(false);
         getAllPosts();
       }else{
         console.log("Edit Post Error");
@@ -124,28 +129,30 @@ const Post = ({
           <div>
             <EditIcon 
               className={classes.icon}
-              onClick={() => {
-                handleEditPost()
-                this.setEditedPostContent(editedPostContent)
-                }
-              }
+              onClick={() => setWantToEdited(true)}
             />
             <DeleteIcon 
               className={classes.icon} 
-              onClick={(e) => 
-                handleDeletePost()
-                
-              }
+              onClick={() => handleDeletePost()}
             />
           </div>
         }
       </div>
-      <div>{content}</div>
-      { isEdited &&
-        <div className={classes.edited}> Edited 
+      { wantToEdited ?
+        <TextField
+          placeholder="Edit post..."
+          variant="outlined"
+          size="small"
+          value={editedPostContent}
+          onChange={e => setEditedPostContent(e.target.value)}
+          onKeyDown={onTextFiledPressEnter}
+        /> :
+        <div>
+          <div>{content}</div>
+          { isEdited &&
+            <div className={classes.edited}>Edited</div>
+          }
         </div>
-
-
       }
       <Divider className={classes.divider}/>
       { comments.map((comment) => (
