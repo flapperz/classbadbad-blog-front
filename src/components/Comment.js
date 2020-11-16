@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Moment from 'react-moment';
 import axios from "axios";
 
@@ -28,6 +28,8 @@ const Comment = ({
 }) => {
   const classes = useStyles();
   const token = JSON.parse(localStorage.getItem('token'));
+  const [editedCommentContent, setEditedCommentContent] = useState('');
+
 
   const handleDeleteComment = async () => {
     try {
@@ -47,7 +49,29 @@ const Comment = ({
       console.log("There are something wrong about delete comment :(");
     }
   };
-  
+
+  const handleEditComment = async () => {
+    try {
+      const response = await axios.patch(backend+"/post/comment/"+postId+"/"+commentId, {
+          message: editedCommentContent
+      },{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { message } = response.data;
+      if (message) {
+        console.log(message);
+        setEditedCommentContent('hello edited comment');
+        getAllPosts();
+      } else {
+        console.log("EditComment Error");
+      } 
+  } catch (e) {
+    console.log("There is something wrong about edit comment :(");
+    }
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -62,7 +86,10 @@ const Comment = ({
         </div>
         { (userRole === ROLE.ADMIN || userId === commentAuthor) &&
           <div>
-            <EditIcon className={classes.icon}/>
+            <EditIcon 
+              className={classes.icon}
+              onClick={() => handleEditComment()}
+            />
             <DeleteIcon 
               className={classes.icon} 
               onClick={() => handleDeleteComment()}

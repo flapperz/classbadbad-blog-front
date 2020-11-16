@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 
 import UserImg from "../assets/user.png";
 import Comment from "../components/Comment";
+import { Button } from '@material-ui/core';
 
 const ROLE = {
   ADMIN: "ADMIN",
@@ -33,6 +34,7 @@ const Post = ({
   const classes = useStyles();
   const token = JSON.parse(localStorage.getItem('token'));
   const [commentContent, setCommentContent] = useState('');
+  const [editedPostContent, setEditedPostContent] = useState('');
 
   const handleCreateComment = async () => {
     try {
@@ -59,6 +61,30 @@ const Post = ({
   const onTextFiledPressEnter = (e) => {
     if (e.keyCode === 13) {
       handleCreateComment();
+    }
+  };
+
+  const handleEditPost = async () => {
+    try{
+      const response = await axios.patch(backend+"/post", {
+          postId: postId,
+          message: editedPostContent
+        },{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const { message } = response.data;
+      if(message){
+        console.log(message);
+        setEditedPostContent('hello edited post');
+        getAllPosts();
+      }else{
+        console.log("Edit Post Error");
+
+      }
+    }catch(e){
+      console.log("There is something wrong about edit post");
     }
   };
 
@@ -96,17 +122,30 @@ const Post = ({
         </div>
         { (userRole === ROLE.ADMIN || userId === authorId) &&
           <div>
-            <EditIcon className={classes.icon}/>
+            <EditIcon 
+              className={classes.icon}
+              onClick={() => {
+                handleEditPost()
+                this.setEditedPostContent(editedPostContent)
+                }
+              }
+            />
             <DeleteIcon 
               className={classes.icon} 
-              onClick={() => handleDeletePost()}
+              onClick={(e) => 
+                handleDeletePost()
+                
+              }
             />
           </div>
         }
       </div>
       <div>{content}</div>
       { isEdited &&
-        <div className={classes.edited}>Edited</div>
+        <div className={classes.edited}> Edited 
+        </div>
+
+
       }
       <Divider className={classes.divider}/>
       { comments.map((comment) => (
