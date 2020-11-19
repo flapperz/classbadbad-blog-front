@@ -94,7 +94,7 @@ const Home = ({ history, handleLogout }) => {
   };
 
   return (
-    <div>
+    <div className={classes.container}>
       <div className={classes.navBar}>
         <div style={{ marginRight: 12 }}>{username},</div>
         <Button
@@ -109,7 +109,7 @@ const Home = ({ history, handleLogout }) => {
           Log out
         </Button>
       </div>
-      <div className={classes.container}>
+      <div className={classes.Contentcontainer}>
         <div className={classes.post}>
           <img 
             className={classes.img}
@@ -157,7 +157,14 @@ const Home = ({ history, handleLogout }) => {
 };
 
 const useStyles = makeStyles({
-  container: {
+  container:{
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#F9F9F9",
+    height: "100%"
+  },
+  Contentcontainer: {
     display: "flex",
     flexGrow: 1,
     flexDirection: "column",
@@ -170,6 +177,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     width: "100vw",
     height: 48,
+    backgroundColor: "white",
     boxShadow: "inset 0 0 1px #353736",
   },
   logoutButton: {
