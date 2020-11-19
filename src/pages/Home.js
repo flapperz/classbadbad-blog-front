@@ -24,6 +24,7 @@ const Home = ({ history, handleLogout }) => {
   const [userRole, setUserRole] = useState('');
   const [allPosts, setAllPosts] = useState([]);
   const [postContent, setPostContent] = useState('');
+  const [placeholder, setPlaceholder] = useState('');
 
   const getProfile = async () => {
     try {
@@ -36,6 +37,7 @@ const Home = ({ history, handleLogout }) => {
       if (userId) {
         setUserId(userId);
         setUsername(username);
+        setPlaceholder("Say something, "+username+".")
         if (role == 0) {
           setUserRole(ROLE.ADMIN);
         } else {
@@ -117,7 +119,7 @@ const Home = ({ history, handleLogout }) => {
           />
           <TextField
             className={classes.textField}
-            placeholder="Say something, username."
+            placeholder={placeholder}
             multiline
             rowsMax={4}
             variant="outlined"
