@@ -19,7 +19,6 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
-  const [token, setToken] = React.useState('');
   
   const handleSetToken = (data) => {
 		localStorage.setItem('token', JSON.stringify(data));
@@ -28,10 +27,6 @@ const App = () => {
 	const handleLogout = () => {
 		localStorage.removeItem('token');
   };
-
-  React.useEffect(() => {
-    setToken(JSON.parse(localStorage.getItem('token')));
-  }, []);
   
   return (
     <ThemeProvider theme={theme}>
@@ -40,12 +35,12 @@ const App = () => {
           <Route path="/login" exact>
             <Login handleLogin={(token) => handleSetToken(token)}/>
           </Route>
-          { token &&
+          { JSON.parse(localStorage.getItem('token')) &&
             <Route path="/home" exact>
               <Home handleLogout={handleLogout}/>
             </Route>
           }
-          { token
+          { JSON.parse(localStorage.getItem('token'))
             ? <Redirect to="/home" />
             : <Redirect to="/login" />
           }
