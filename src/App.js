@@ -38,10 +38,15 @@ const App = () => {
           <Route path="/login" exact>
             <Login handleLogin={(token) => handleSetToken(token)}/>
           </Route>
-          <Route path="/home" exact>
-            <Home handleLogout={handleLogout}/>
-          </Route>
-          <Redirect to="/login" />
+          { JSON.parse(localStorage.getItem('token')) &&
+            <Route path="/home" exact>
+              <Home handleLogout={handleLogout}/>
+            </Route>
+          }
+          { JSON.parse(localStorage.getItem('token'))
+            ? <Redirect to="/home" />
+            : <Redirect to="/login" />
+          }
         </Switch>
       </Router>
     </ThemeProvider>
