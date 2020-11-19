@@ -19,7 +19,7 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
-  const [token, setToken] = React.useState(JSON.parse(localStorage.getItem('token')));
+  const [token, setToken] = React.useState('');
   
   const handleSetToken = (data) => {
 		localStorage.setItem('token', JSON.stringify(data));
@@ -28,6 +28,10 @@ const App = () => {
 	const handleLogout = () => {
 		localStorage.removeItem('token');
   };
+
+  React.useEffect(() => {
+    setToken(JSON.parse(localStorage.getItem('token')));
+  }, []);
   
   return (
     <ThemeProvider theme={theme}>
