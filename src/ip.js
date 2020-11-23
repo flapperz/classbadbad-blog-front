@@ -1,2 +1,2 @@
-const backend = "https://localhost:4000";
+const backend = "https://classbadbad-back.herokuapp.com";
 export default backend;
