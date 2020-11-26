@@ -43,7 +43,8 @@ module.exports = function (proxy, allowedHost) {
       "X-Frame-Options": "sameorigin",
       "Content-Security-Policy":
         "frame-ancestors 'none'; default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';base-uri 'self';form-action 'self'",
-      "Cache-Control": "private, no-cache, no-store, max-age=0",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Expires: 0,
       Pragma: "no-cache",
       "X-Content-Type-Options": "nosniff",
       "X-XSS-Protection": 1,
