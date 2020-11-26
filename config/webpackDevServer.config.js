@@ -47,7 +47,7 @@ module.exports = function (proxy, allowedHost) {
       Pragma: "no-cache",
       "X-Content-Type-Options": "nosniff",
       "X-XSS-Protection": 1,
-      "X-Powered-By": "Something you should not know",
+      "X-Powered-By": false,
     },
     // By default WebpackDevServer serves physical files from current directory
     // in addition to all the virtual build products that it serves from memory.
