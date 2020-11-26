@@ -41,7 +41,8 @@ module.exports = function (proxy, allowedHost) {
     clientLogLevel: "none",
     headers: {
       "X-Frame-Options": "sameorigin",
-      "Content-Security-Policy": "frame-ancestors 'none'",
+      "Content-Security-Policy":
+        "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';base-uri 'self';form-action 'self'",
       "Cache-Control": "Private, no-cache, no-store,",
       Pragma: "no-cache",
     },
