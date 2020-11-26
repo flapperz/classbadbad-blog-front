@@ -41,8 +41,7 @@ module.exports = function (proxy, allowedHost) {
     clientLogLevel: "none",
     headers: {
       "X-Frame-Options": "sameorigin",
-      "Content-Security-Policy":
-        "frame-ancestors https://classbadbad-front.herokuapp.com",
+      "Content-Security-Policy": "frame-ancestors 'none'",
     },
     // By default WebpackDevServer serves physical files from current directory
     // in addition to all the virtual build products that it serves from memory.
