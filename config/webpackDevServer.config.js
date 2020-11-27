@@ -42,7 +42,7 @@ module.exports = function (proxy, allowedHost) {
     headers: {
       "X-Frame-Options": "sameorigin",
       "Content-Security-Policy":
-        "manifest-src 'self'; default-src 'none'; script-src 'self'; connect-src 'self' https://classbadbad-back.herokuapp.com/; img-src * 'self' data: https:; style-src 'self' 'unsafe-inline';base-uri 'self';form-action 'self'",
+        "manifest-src 'self'; default-src 'none'; script-src 'self'; connect-src 'self' https://classbadbad-back.herokuapp.com/; img-src 'self' data: https:; style-src 'self' 'unsafe-inline';base-uri 'self';form-action 'self'",
       "Cache-Control": "no-cache, no-store, must-revalidate",
       Expires: 0,
       Pragma: "no-cache",
